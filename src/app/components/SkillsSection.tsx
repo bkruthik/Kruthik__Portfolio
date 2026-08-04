@@ -85,7 +85,7 @@ const DEFAULT_SKILL_GROUPS = [
 type SkillData = { id: string; skills: string[] };
 
 export default function SkillsSection() {
-  const { isUnlocked } = useAdmin();
+  const { isUnlocked, openPasswordModal } = useAdmin();
   const sectionRef = useRef<HTMLElement>(null);
   const [skillGroups, setSkillGroups] = useState(DEFAULT_SKILL_GROUPS);
   const [addingTo, setAddingTo] = useState<string | null>(null);
@@ -139,6 +139,8 @@ export default function SkillsSection() {
     if (isUnlocked) {
       setAddingTo(groupId);
       setNewSkillInput('');
+    } else {
+      openPasswordModal();
     }
   };
 
@@ -148,6 +150,8 @@ export default function SkillsSection() {
         g.id === groupId ? { ...g, skills: g.skills.filter((s) => s !== skill) } : g
       );
       persistSkills(updated);
+    } else {
+      openPasswordModal();
     }
   };
 
@@ -207,7 +211,7 @@ export default function SkillsSection() {
                 opacity: 0,
               }}
             >
-              {/* Header row */}
+              {/* Header row with ALWAYS VISIBLE + Add Skill button */}
               <div className="flex items-center justify-between gap-3 mb-4">
                 <div className="flex items-center gap-3">
                   <div
@@ -221,23 +225,21 @@ export default function SkillsSection() {
                   </span>
                 </div>
 
-                {/* + Add skill button — visible when unlocked */}
-                {isUnlocked && (
-                  <button
-                    onClick={() => handlePlusClick(group.id)}
-                    title={`Add skill to ${group.label}`}
-                    className="w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
-                    style={{
-                      background: 'rgba(200,150,90,0.15)',
-                      border: '1px solid rgba(200,150,90,0.4)',
-                      color: 'var(--primary)',
-                    }}
-                  >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                  </button>
-                )}
+                {/* + Add skill button — ALWAYS VISIBLE */}
+                <button
+                  onClick={() => handlePlusClick(group.id)}
+                  title={`Add skill to ${group.label}`}
+                  className="w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
+                  style={{
+                    background: 'rgba(200,150,90,0.15)',
+                    border: '1px solid rgba(200,150,90,0.4)',
+                    color: 'var(--primary)',
+                  }}
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                </button>
               </div>
 
               {/* Skills pills */}
@@ -245,27 +247,24 @@ export default function SkillsSection() {
                 {group?.skills?.map((skill) => (
                   <span
                     key={skill}
-                    className="tag-pill group/skill relative transition-all duration-200"
-                    style={{ paddingRight: isUnlocked ? '1.5rem' : undefined }}
+                    className="tag-pill group/skill relative transition-all duration-200 pr-6"
                   >
                     {skill}
-                    {/* Delete skill button — visible when unlocked */}
-                    {isUnlocked && (
-                      <button
-                        onClick={() => removeSkill(group.id, skill)}
-                        className="absolute right-1 top-1/2 -translate-y-1/2 opacity-60 group-hover/skill:opacity-100 transition-opacity duration-150 hover:text-red-400"
-                        title={`Remove ${skill}`}
-                      >
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                          <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-                        </svg>
-                      </button>
-                    )}
+                    {/* Delete skill button — ALWAYS VISIBLE on hover */}
+                    <button
+                      onClick={() => removeSkill(group.id, skill)}
+                      className="absolute right-1 top-1/2 -translate-y-1/2 opacity-60 group-hover/skill:opacity-100 transition-opacity duration-150 hover:text-red-400"
+                      title={`Remove ${skill}`}
+                    >
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                      </svg>
+                    </button>
                   </span>
                 ))}
 
                 {/* Inline add-skill input */}
-                {isUnlocked && addingTo === group.id && (
+                {addingTo === group.id && (
                   <div className="flex items-center gap-1.5">
                     <input
                       ref={inputRef}

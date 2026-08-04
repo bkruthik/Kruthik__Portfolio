@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export default function ContactSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -18,6 +19,19 @@ export default function ContactSection() {
     targets?.forEach((el) => observer?.observe(el));
     return () => observer?.disconnect();
   }, []);
+
+  const handleEmailClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const email = 'balusukruthik@gmail.com';
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 3000);
+
+    // Open Gmail web compose in a new tab
+    window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${email}`, '_blank');
+  };
 
   return (
     <section ref={sectionRef} id="contact" className="py-20 relative overflow-hidden">
@@ -61,24 +75,25 @@ export default function ContactSection() {
 
           {/* Contact links */}
           <div
-            className="animate-on-scroll flex flex-col sm:flex-row gap-4 justify-center items-center"
+            className="animate-on-scroll flex flex-col sm:flex-row gap-4 justify-center items-center relative"
             style={{ animation: 'animationIn 0.8s ease-out 0.4s forwards', opacity: 0 }}
           >
-            {/* Email */}
-            <a
-              href="mailto:balusukruthik@gmail.com"
-              className="group relative overflow-hidden flex items-center gap-3 bg-primary text-primary-foreground px-7 py-3.5 text-sm font-semibold tracking-wide transition-all duration-300 w-full sm:w-auto justify-center"
+            {/* Email Button — opens Gmail Web + copies to clipboard */}
+            <button
+              onClick={handleEmailClick}
+              className="group relative overflow-hidden flex items-center gap-3 bg-primary text-primary-foreground px-7 py-3.5 text-sm font-semibold tracking-wide transition-all duration-300 w-full sm:w-auto justify-center cursor-pointer"
               style={{ borderRadius: '2px' }}
               onMouseEnter={(e) => (e.currentTarget.style.boxShadow = '0 0 24px rgba(200,150,90,0.4)')}
               onMouseLeave={(e) => (e.currentTarget.style.boxShadow = 'none')}
+              title="Click to email via Gmail or copy email address"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                 <polyline points="22,6 12,13 2,6" />
               </svg>
-              balusukruthik@gmail.com
+              {copied ? 'Email Copied!' : 'balusukruthik@gmail.com'}
               <div className="absolute inset-0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12" />
-            </a>
+            </button>
 
             {/* LinkedIn */}
             <a
@@ -95,6 +110,12 @@ export default function ContactSection() {
               LinkedIn
             </a>
           </div>
+          
+          {copied && (
+            <p className="text-xs text-green-400 mt-3 animate-pulse">
+              ✓ Email address copied to clipboard & opened in Gmail!
+            </p>
+          )}
         </div>
       </div>
     </section>

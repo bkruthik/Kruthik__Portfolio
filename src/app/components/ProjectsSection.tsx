@@ -126,6 +126,8 @@ export default function ProjectsSection() {
       const updated = projects.filter((p) => p.id !== projectId);
       setProjects(updated);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    } else {
+      openPasswordModal();
     }
   };
 
@@ -158,40 +160,36 @@ export default function ProjectsSection() {
               </h2>
             </div>
             
-            {/* + Add Project button — visible when unlocked */}
-            {isUnlocked && (
-              <div
-                className="animate-on-scroll"
-                style={{ animation: 'animationIn 0.8s ease-out 0.2s forwards', opacity: 0 }}
+            {/* + Add Project button — ALWAYS VISIBLE */}
+            <div
+              className="animate-on-scroll"
+              style={{ animation: 'animationIn 0.8s ease-out 0.2s forwards', opacity: 0 }}
+            >
+              <button
+                onClick={handlePlusClick}
+                className="group glass-card-hover inline-flex items-center gap-2 px-4 py-2 text-xs tracking-widest uppercase text-primary border border-primary/40 hover:bg-primary/10 transition-all duration-200"
+                style={{ borderRadius: '4px' }}
+                title="Add a new project"
               >
-                <button
-                  onClick={handlePlusClick}
-                  className="group glass-card-hover inline-flex items-center gap-2 px-4 py-2 text-xs tracking-widest uppercase text-primary border border-primary/30 hover:bg-primary/10 transition-all duration-200"
-                  style={{ borderRadius: '4px' }}
-                  title="Add a new project"
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <line x1="12" y1="5" x2="12" y2="19" />
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                  </svg>
-                  + Add Project
-                </button>
-              </div>
-            )}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                + Add Project
+              </button>
+            </div>
           </div>
 
           {/* Projects grid */}
           {projects.length === 0 ? (
             <div className="text-center py-20">
               <p className="text-muted-foreground text-sm mb-4">No projects listed yet.</p>
-              {isUnlocked && (
-                <button
-                  onClick={handlePlusClick}
-                  className="px-5 py-2.5 bg-primary text-primary-foreground text-xs uppercase tracking-wider rounded font-medium"
-                >
-                  + Add First Project
-                </button>
-              )}
+              <button
+                onClick={handlePlusClick}
+                className="px-5 py-2.5 bg-primary text-primary-foreground text-xs uppercase tracking-wider rounded font-medium"
+              >
+                + Add First Project
+              </button>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -207,19 +205,17 @@ export default function ProjectsSection() {
                       border: '1px solid var(--border)',
                     }}
                   >
-                    {/* Delete button on card — only visible when unlocked */}
-                    {isUnlocked && (
-                      <button
-                        onClick={() => handleDeleteClick(project.id)}
-                        title="Delete project"
-                        className="absolute top-3 right-3 z-20 w-7 h-7 rounded-full bg-background/80 backdrop-blur border border-red-500/30 text-red-400 hover:text-red-300 hover:bg-red-500/20 flex items-center justify-center transition-all duration-200 opacity-60 hover:opacity-100"
-                      >
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <polyline points="3 6 5 6 21 6" />
-                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                        </svg>
-                      </button>
-                    )}
+                    {/* Delete button on card */}
+                    <button
+                      onClick={() => handleDeleteClick(project.id)}
+                      title="Delete project"
+                      className="absolute top-3 right-3 z-20 w-7 h-7 rounded-full bg-background/80 backdrop-blur border border-red-500/30 text-red-400 hover:text-red-300 hover:bg-red-500/20 flex items-center justify-center transition-all duration-200 opacity-60 hover:opacity-100"
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <polyline points="3 6 5 6 21 6" />
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                      </svg>
+                    </button>
 
                     {/* Image */}
                     <div className="relative h-48 overflow-hidden">

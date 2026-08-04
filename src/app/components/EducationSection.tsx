@@ -94,6 +94,8 @@ export default function EducationSection() {
       const updated = certifications.filter((_, i) => i !== index);
       setCertifications(updated);
       localStorage.setItem(CERT_STORAGE_KEY, JSON.stringify(updated));
+    } else {
+      openPasswordModal();
     }
   };
 
@@ -172,23 +174,21 @@ export default function EducationSection() {
               className="animate-on-scroll"
               style={{ animation: 'animationIn 0.8s ease-out 0.25s forwards', opacity: 0 }}
             >
-              {/* Certifications header */}
+              {/* Certifications header — ALWAYS VISIBLE + Add Certification button */}
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xs tracking-widest uppercase text-muted-foreground">Certifications</h3>
-                {isUnlocked && (
-                  <button
-                    onClick={handlePlusClick}
-                    className="group glass-card-hover inline-flex items-center gap-1.5 px-3 py-1.5 text-xs tracking-widest uppercase text-primary border border-primary/30 hover:bg-primary/10 transition-colors duration-200"
-                    style={{ borderRadius: '4px' }}
-                    title="Add a new certification"
-                  >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <line x1="12" y1="5" x2="12" y2="19" />
-                      <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                    + Add Certification
-                  </button>
-                )}
+                <button
+                  onClick={handlePlusClick}
+                  className="group glass-card-hover inline-flex items-center gap-1.5 px-3 py-1.5 text-xs tracking-widest uppercase text-primary border border-primary/40 hover:bg-primary/10 transition-colors duration-200"
+                  style={{ borderRadius: '4px' }}
+                  title="Add a new certification"
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                  + Add Certification
+                </button>
               </div>
 
               <div className="space-y-3">
@@ -215,17 +215,15 @@ export default function EducationSection() {
                     </div>
                     
                     <div className="flex items-center gap-2">
-                      {isUnlocked && (
-                        <button
-                          onClick={() => handleDeleteClick(index)}
-                          title="Delete certification"
-                          className="w-6 h-6 rounded-full text-muted-foreground hover:text-red-400 hover:bg-red-500/10 flex items-center justify-center transition-colors opacity-40 group-hover:opacity-100"
-                        >
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-                          </svg>
-                        </button>
-                      )}
+                      <button
+                        onClick={() => handleDeleteClick(index)}
+                        title="Delete certification"
+                        className="w-6 h-6 rounded-full text-muted-foreground hover:text-red-400 hover:bg-red-500/10 flex items-center justify-center transition-colors opacity-60 group-hover:opacity-100"
+                      >
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                      </button>
                       <div
                         className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
                         style={{ background: 'rgba(74,222,128,0.1)', border: '1px solid rgba(74,222,128,0.2)' }}
