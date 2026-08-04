@@ -66,7 +66,7 @@ export default function ContactSection() {
           >
             {/* Email link — direct browser web link without mailto: */}
             <a
-              href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=balusukruthik@gmail.com"
               target="_blank"
               rel="noopener noreferrer"
               className="group relative overflow-hidden flex items-center gap-3 bg-primary text-primary-foreground px-7 py-3.5 text-sm font-semibold tracking-wide transition-all duration-300 w-full sm:w-auto justify-center"
