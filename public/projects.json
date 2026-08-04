@@ -1,0 +1,54 @@
+[
+    {
+        "id": "student-result-management",
+        "title": "Student Result Management System",
+        "description": "A command-line application built to manage student academic records end-to-end. The system handles adding new students, updating existing records, deleting entries, and viewing comprehensive result reports. MySQL JOIN queries fetch student details alongside subject-wise results in a single operation, while grade logic and pass/fail calculations are handled through clean OOP design with dedicated classes for each entity.",
+        "tags": [
+            "Python",
+            "MySQL",
+            "OOP",
+            "CLI",
+            "CRUD"
+        ],
+        "githubUrl": "https://github.com/bkruthik",
+        "liveUrl": "",
+        "category": "Backend",
+        "featured": true,
+        "createdAt": "2024-01-15"
+    },
+    {
+        "id": "library-book-management",
+        "title": "Library Book Management System",
+        "description": "A full-featured library management backend that tracks book inventory, member registrations, and borrowing transactions. The database schema uses foreign key constraints linking books, members, and transaction tables, ensuring data integrity across all operations. OOP classes \u2014 Book, Member, and Library \u2014 encapsulate business logic cleanly, while SQL queries power search functionality and automated overdue tracking.",
+        "tags": [
+            "Python",
+            "MySQL",
+            "OOP",
+            "CRUD",
+            "SQL"
+        ],
+        "githubUrl": "https://github.com/bkruthik",
+        "liveUrl": "",
+        "category": "Backend",
+        "featured": true,
+        "createdAt": "2024-03-20"
+    },
+    {
+        "id": "personal-expense-tracker",
+        "title": "Personal Expense Tracker Web App",
+        "description": "A Django-powered web application for tracking daily personal expenses. Users can add, edit, delete, and view expense entries through a clean browser interface. Django ORM connects to MySQL for persistent storage, with models designed to capture expense category, amount, date, and description. All CRUD operations are handled through Django views and templates using standard HTML and CSS, with Git version control maintained throughout development.",
+        "tags": [
+            "Python",
+            "Django",
+            "MySQL",
+            "HTML",
+            "CSS",
+            "Git"
+        ],
+        "githubUrl": "https://github.com/bkruthik",
+        "liveUrl": "",
+        "category": "Web",
+        "featured": true,
+        "createdAt": "2024-06-10"
+    }
+]
