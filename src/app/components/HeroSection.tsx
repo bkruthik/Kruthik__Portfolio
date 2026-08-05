@@ -144,10 +144,9 @@ export default function HeroSection() {
         {/* Bento project cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 w-full">
           {heroProjects?.map((project, index) =>
-          <Link
+          <div
             key={project?.id}
-            href={`/project-detail?id=${project?.id}`}
-            className={`group relative rounded-2xl overflow-hidden glass-card transition-all duration-700 cursor-pointer ${
+            className={`group relative rounded-2xl overflow-hidden glass-card transition-all duration-700 ${
             index === 1 ? 'hero-card-center' : ''}`
             }
             style={{
@@ -185,13 +184,7 @@ export default function HeroSection() {
                 </p>
               </div>
 
-              {/* Corner arrow */}
-              <div className="absolute top-4 right-4 w-7 h-7 glass-card rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                  <path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-            </Link>
+            </div>
           )}
         </div>
 
