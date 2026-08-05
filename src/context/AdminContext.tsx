@@ -2,8 +2,8 @@
 
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 
-const ADMIN_PASSWORD_HASH = 'b0fcdf851a8fa5fa2b58ccb5e4633d84524a95806733557c6f68bdc4afcced27'; // Hash of Kruthikk3013**
-const SECRET_HASH = '102e012866dd7d921e6c010521251045f835ee19244b0852ee5a464ff163e418'; // Hash of kruthik
+const ADMIN_PASSWORD_HASH = 'b0fcdf851a8fa5fa2b58ccb5e4633d84524a95806733557c6f68bdc4afcced27';
+const SECRET_HASH = '102e012866dd7d921e6c010521251045f835ee19244b0852ee5a464ff163e418';
 const SECRET_LENGTH = 7;
 const SESSION_UNLOCK_KEY = 'kruthik_admin_unlocked';
 
