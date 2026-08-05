@@ -2,28 +2,32 @@
 
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 
-const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'default_secure_password';
+const ADMIN_PASSWORD_HASH = 'b0fcdf851a8fa5fa2b58ccb5e4633d84524a95806733557c6f68bdc4afcced27'; // Hash of Kruthikk3013**
+const SECRET_HASH = '102e012866dd7d921e6c010521251045f835ee19244b0852ee5a464ff163e418'; // Hash of kruthik
+const SECRET_LENGTH = 7;
 const SESSION_UNLOCK_KEY = 'kruthik_admin_unlocked';
-const SECRET = process.env.NEXT_PUBLIC_SECRET_KEY || 'kruthik';
+
+async function hashString(message: string) {
+  const msgUint8 = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+}
 
 interface AdminContextType {
   isUnlocked: boolean;
-  unlockWithPassword: (password: string) => boolean;
   lockAdmin: () => void;
   showPasswordModal: boolean;
   openPasswordModal: () => void;
   closePasswordModal: () => void;
-  ADMIN_PASSWORD: string;
 }
 
 const AdminContext = createContext<AdminContextType>({
   isUnlocked: false,
-  unlockWithPassword: () => false,
   lockAdmin: () => {},
   showPasswordModal: false,
   openPasswordModal: () => {},
   closePasswordModal: () => {},
-  ADMIN_PASSWORD,
 });
 
 export function AdminProvider({ children }: { children: React.ReactNode }) {
@@ -42,7 +46,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = async (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         if (showPasswordModal) setShowPasswordModal(false);
         return;
@@ -53,11 +57,12 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
       const entry = { key: e.key.toLowerCase(), time: now };
       const recent = keyBufferRef.current.filter((k) => now - k.time < 5000);
       recent.push(entry);
-      keyBufferRef.current = recent.slice(-SECRET.length);
+      keyBufferRef.current = recent.slice(-SECRET_LENGTH);
 
-      if (keyBufferRef.current.length === SECRET.length) {
+      if (keyBufferRef.current.length === SECRET_LENGTH) {
         const typed = keyBufferRef.current.map((k) => k.key).join('');
-        if (typed === SECRET) {
+        const hashed = await hashString(typed);
+        if (hashed === SECRET_HASH) {
           keyBufferRef.current = [];
           if (!isUnlocked) {
             setShowPasswordModal(true);
@@ -70,26 +75,21 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isUnlocked, showPasswordModal]);
 
-  const unlockWithPassword = (pass: string) => {
-    if (pass === ADMIN_PASSWORD) {
-      setIsUnlocked(true);
-      sessionStorage.setItem(SESSION_UNLOCK_KEY, 'true');
-      setShowPasswordModal(false);
-      setPasswordInput('');
-      setPasswordError('');
-      return true;
-    }
-    return false;
-  };
-
   const lockAdmin = () => {
     setIsUnlocked(false);
     sessionStorage.removeItem(SESSION_UNLOCK_KEY);
   };
 
-  const handleModalSubmit = (e: React.FormEvent) => {
+  const handleModalSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!unlockWithPassword(passwordInput)) {
+    const hashed = await hashString(passwordInput);
+    if (hashed === ADMIN_PASSWORD_HASH) {
+      setIsUnlocked(true);
+      sessionStorage.setItem(SESSION_UNLOCK_KEY, 'true');
+      setShowPasswordModal(false);
+      setPasswordInput('');
+      setPasswordError('');
+    } else {
       setPasswordError('Incorrect password. Please try again.');
     }
   };
@@ -98,12 +98,10 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     <AdminContext.Provider
       value={{
         isUnlocked,
-        unlockWithPassword,
         lockAdmin,
         showPasswordModal,
         openPasswordModal: () => setShowPasswordModal(true),
         closePasswordModal: () => setShowPasswordModal(false),
-        ADMIN_PASSWORD,
       }}
     >
       {children}
