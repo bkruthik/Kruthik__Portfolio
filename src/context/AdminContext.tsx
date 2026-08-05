@@ -2,9 +2,9 @@
 
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 
-const ADMIN_PASSWORD = 'Kruthikk3013**';
+const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'default_secure_password';
 const SESSION_UNLOCK_KEY = 'kruthik_admin_unlocked';
-const SECRET = 'kruthik';
+const SECRET = process.env.NEXT_PUBLIC_SECRET_KEY || 'kruthik';
 
 interface AdminContextType {
   isUnlocked: boolean;
