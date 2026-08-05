@@ -2,6 +2,8 @@ import { imageHosts } from './image-hosts.config.mjs';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
+  basePath: '/Kruthik__Portfolio',
   productionBrowserSourceMaps: true,
   distDir: process.env.DIST_DIR || '.next',
   typescript: {
@@ -12,9 +14,7 @@ const nextConfig = {
   },
   devIndicators: false,
   images: {
-    remotePatterns: imageHosts,
-    minimumCacheTTL: 60,
-    qualities: [75, 85, 100],
+    unoptimized: true,
   },
   webpack(config, { dev }) {
     if (dev) {
