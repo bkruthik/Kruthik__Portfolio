@@ -64,7 +64,7 @@ export default function ContactSection() {
             className="animate-on-scroll flex flex-col sm:flex-row gap-4 justify-center items-center"
             style={{ animation: 'animationIn 0.8s ease-out 0.4s forwards', opacity: 0 }}
           >
-            {/* Email link — direct browser web link without mailto: */}
+            {/* Email link */}
             <a
               href="https://mail.google.com/mail/?view=cm&fs=1&to=balusukruthik@gmail.com"
               target="_blank"
